@@ -1,0 +1,13 @@
+# Build output
+dist/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+
+# Build script (tidak perlu di hosting)
+build.ps1

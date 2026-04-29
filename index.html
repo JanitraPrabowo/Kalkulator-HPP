@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator HPP Minuman Kekinian – D4 Akuntansi Perpajakan POLITALA</title>
+  <meta name="description"
+    content="Kalkulator Harga Pokok Produksi (HPP) lengkap untuk usaha minuman kekinian. Hitung biaya bahan baku, kemasan, tenaga kerja, overhead, dan BEP secara otomatis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ===== INSTITUTION BAR ===== -->
+  <div class="inst-bar">
+    <div class="container inst-bar-inner">
+      <div class="inst-left">
+        <!-- Ganti src dengan path logo Anda, misal: assets/logo-politala.png -->
+        <img src="assets/logo-politala.png" alt="Logo POLITALA" class="inst-logo"
+          onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';" />
+        <div id="logoFallback" class="logo-fallback" style="display:none">🎓</div>
+        <div class="inst-info">
+          <span class="inst-name">Politeknik Negeri Tanah Laut</span>
+          <span class="inst-prodi">Program Studi D4 Akuntansi Perpajakan</span>
+        </div>
+      </div>
+      <div class="inst-right">
+        <span class="inst-tag">Media Pembelajaran</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-glow"></div>
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-icon">🧋</div>
+        <div>
+          <h1 class="brand-title">KalkuHPP</h1>
+          <p class="brand-sub">Minuman Kekinian</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <button class="btn-reset" id="btnReset">🔄 Reset</button>
+        <button class="btn-export" id="btnExport">📥 Export PDF</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-badge">✨ Tim Dosen AP POLITALA</p>
+      <h2 class="hero-title">Hitung HPP Minumanmu <span class="gradient-text">Secara Akurat</span></h2>
+      <p class="hero-desc">Masukkan semua komponen biaya produksi — bahan baku, kemasan, tenaga kerja, overhead, dan
+        penyusutan alat — untuk mendapatkan HPP, harga jual ideal, dan BEP secara otomatis.</p>
+      <div class="hero-chips">
+        <span class="chip">🥤 Bubble Tea</span>
+        <span class="chip">☕ Kopi Susu</span>
+        <span class="chip">🍹 Jus & Smoothie</span>
+        <span class="chip">🧃 Minuman Lainnya</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="container main-grid" id="mainContent">
+
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+
+      <!-- Info Produk -->
+      <div class="card" id="sectionProduk">
+        <div class="card-header">
+          <span class="card-icon">📋</span>
+          <div>
+            <h3 class="card-title">Informasi Produk</h3>
+            <p class="card-desc">Data dasar produk minuman Anda</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="namaProduk">Nama Produk</label>
+            <input type="text" id="namaProduk" placeholder="cth: Brown Sugar Boba Milk" />
+          </div>
+          <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <select id="kategori">
+              <option value="">-- Pilih Kategori --</option>
+              <option>Kopi Susu</option>
+              <option>Bubble Tea / Boba</option>
+              <option>Teh Susu</option>
+              <option>Jus Buah</option>
+              <option>Smoothie</option>
+              <option>Minuman Coklat</option>
+              <option>Es Buah</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ukuranSajian">Ukuran Sajian (ml)</label>
+            <input type="number" id="ukuranSajian" placeholder="cth: 500" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="targetProduksi">Target Produksi/Hari (cup)</label>
+            <input type="number" id="targetProduksi" placeholder="cth: 50" min="1" value="50" />
+          </div>
+          <div class="form-group">
+            <label for="hariOperasi">Hari Operasi/Bulan</label>
+            <input type="number" id="hariOperasi" placeholder="cth: 26" min="1" max="31" value="26" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Bahan Baku -->
+      <div class="card" id="sectionBahanBaku">
+        <div class="card-header">
+          <span class="card-icon">🧪</span>
+          <div>
+            <h3 class="card-title">Bahan Baku</h3>
+            <p class="card-desc">Biaya bahan per satu cup minuman</p>
+          </div>
+          <button class="btn-add" id="btnAddBahan">+ Tambah</button>
+        </div>
+        <div class="table-wrap">
+          <table id="tableBahan">
+            <thead>
+              <tr>
+                <th>Nama Bahan</th>
+                <th>Satuan</th>
+                <th>Jml/Cup</th>
+                <th>Harga/Satuan (Rp)</th>
+                <th>Total (Rp)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bodyBahan">
+              <!-- rows injected by JS -->
+            </tbody>
+            <tfoot>
+              <tr class="tfoot-total">
+                <td colspan="4">Total Bahan Baku / Cup</td>
+                <td id="totalBahan">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Kemasan -->
+      <div class="card" id="sectionKemasan">
+        <div class="card-header">
+          <span class="card-icon">📦</span>
+          <div>
+            <h3 class="card-title">Kemasan & Pelengkap</h3>
+            <p class="card-desc">Cup, sedotan, plastik, stiker, dll.</p>
+          </div>
+          <button class="btn-add" id="btnAddKemasan">+ Tambah</button>
+        </div>
+        <div class="table-wrap">
+          <table id="tableKemasan">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Satuan</th>
+                <th>Jml/Cup</th>
+                <th>Harga/Satuan (Rp)</th>
+                <th>Total (Rp)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bodyKemasan"></tbody>
+            <tfoot>
+              <tr class="tfoot-total">
+                <td colspan="4">Total Kemasan / Cup</td>
+                <td id="totalKemasan">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tenaga Kerja -->
+      <div class="card" id="sectionTK">
+        <div class="card-header">
+          <span class="card-icon">👤</span>
+          <div>
+            <h3 class="card-title">Tenaga Kerja</h3>
+            <p class="card-desc">Gaji, upah, atau honor karyawan</p>
+          </div>
+          <button class="btn-add" id="btnAddTK">+ Tambah</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Posisi</th>
+                <th>Jumlah Orang</th>
+                <th>Gaji/Bulan (Rp)</th>
+                <th>Total (Rp)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bodyTK"></tbody>
+            <tfoot>
+              <tr class="tfoot-total">
+                <td colspan="3">Total Tenaga Kerja / Bulan</td>
+                <td id="totalTK">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Biaya Overhead -->
+      <div class="card" id="sectionOverhead">
+        <div class="card-header">
+          <span class="card-icon">🏪</span>
+          <div>
+            <h3 class="card-title">Biaya Overhead</h3>
+            <p class="card-desc">Sewa, listrik, air, gas, internet, dll.</p>
+          </div>
+          <button class="btn-add" id="btnAddOverhead">+ Tambah</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Jenis Biaya</th>
+                <th>Per Bulan (Rp)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bodyOverhead"></tbody>
+            <tfoot>
+              <tr class="tfoot-total">
+                <td colspan="2">Total Overhead / Bulan</td>
+                <td id="totalOverhead">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Penyusutan Alat -->
+      <div class="card" id="sectionAlat">
+        <div class="card-header">
+          <span class="card-icon">⚙️</span>
+          <div>
+            <h3 class="card-title">Penyusutan Alat & Investasi</h3>
+            <p class="card-desc">Blender, mesin sealer, kulkas, dll.</p>
+          </div>
+          <button class="btn-add" id="btnAddAlat">+ Tambah</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Alat</th>
+                <th>Harga Beli (Rp)</th>
+                <th>Umur Pakai (Bulan)</th>
+                <th>Penyusutan/Bln (Rp)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bodyAlat"></tbody>
+            <tfoot>
+              <tr class="tfoot-total">
+                <td colspan="3">Total Penyusutan / Bulan</td>
+                <td id="totalAlat">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Target Margin -->
+      <div class="card" id="sectionMargin">
+        <div class="card-header">
+          <span class="card-icon">🎯</span>
+          <div>
+            <h3 class="card-title">Target Keuntungan</h3>
+            <p class="card-desc">Tentukan margin keuntungan yang Anda inginkan</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="marginPersen">Margin Keuntungan (%)</label>
+            <div class="input-with-badge">
+              <input type="number" id="marginPersen" value="30" min="0" max="500" />
+              <span class="input-badge">%</span>
+            </div>
+            <p class="input-hint">Keuntungan bersih yang diinginkan dari HPP</p>
+          </div>
+          <div class="form-group">
+            <label for="pajakPersen">Biaya Lain-lain / Pajak (%)</label>
+            <div class="input-with-badge">
+              <input type="number" id="pajakPersen" value="0" min="0" max="100" />
+              <span class="input-badge">%</span>
+            </div>
+            <p class="input-hint">Platform online, komisi, dll. (opsional)</p>
+          </div>
+        </div>
+        <div class="margin-slider-wrap">
+          <label>Preview Margin: <strong id="marginLabel">30%</strong></label>
+          <input type="range" id="marginSlider" min="0" max="200" value="30" class="slider" />
+          <div class="slider-ticks">
+            <span>0%</span><span>50%</span><span>100%</span><span>150%</span><span>200%</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left-col -->
+
+    <!-- RIGHT COLUMN (sticky summary) -->
+    <div class="right-col">
+      <div class="summary-card" id="summaryCard">
+        <div class="summary-header">
+          <h3>📊 Ringkasan HPP</h3>
+          <span class="summary-badge" id="summaryBadge">Belum Dihitung</span>
+        </div>
+
+        <div class="summary-product" id="summaryProduct">
+          <div class="sp-icon">🧋</div>
+          <div>
+            <p class="sp-name" id="spName">—</p>
+            <p class="sp-cat" id="spCat">—</p>
+          </div>
+        </div>
+
+        <!-- Cost Breakdown -->
+        <div class="summary-section">
+          <p class="summary-section-title">Rincian Biaya per Cup</p>
+          <div class="summary-row">
+            <span>Bahan Baku</span>
+            <span id="sBahan">Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>Kemasan</span>
+            <span id="sKemasan">Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>Tenaga Kerja</span>
+            <span id="sTK">Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>Overhead</span>
+            <span id="sOverhead">Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>Penyusutan Alat</span>
+            <span id="sAlat">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-wrap">
+          <canvas id="costChart" width="240" height="240"></canvas>
+          <div class="chart-legend" id="chartLegend"></div>
+        </div>
+
+        <!-- HPP & Harga Jual -->
+        <div class="summary-result">
+          <div class="result-row">
+            <span>HPP per Cup</span>
+            <strong id="rHPP" class="highlight-blue">Rp 0</strong>
+          </div>
+          <div class="result-row">
+            <span>Margin (<span id="rMarginLabel">30</span>%)</span>
+            <strong id="rMarginNominal" class="highlight-green">Rp 0</strong>
+          </div>
+          <div class="result-row">
+            <span>Biaya Lain (<span id="rPajakLabel">0</span>%)</span>
+            <strong id="rPajakNominal" class="highlight-yellow">Rp 0</strong>
+          </div>
+          <div class="result-row highlight-row">
+            <span>💰 Harga Jual Minimal</span>
+            <strong id="rHargaJual" class="highlight-price">Rp 0</strong>
+          </div>
+          <div class="result-row rounded-row">
+            <span>💡 Harga Jual Saran (Dibulatkan)</span>
+            <strong id="rHargaRound" class="highlight-round">Rp 0</strong>
+          </div>
+        </div>
+
+        <!-- BEP -->
+        <div class="bep-section">
+          <p class="summary-section-title">Analisis BEP (Break Even Point)</p>
+          <div class="bep-grid">
+            <div class="bep-card">
+              <p class="bep-label">BEP Unit / Hari</p>
+              <p class="bep-value" id="bepUnit">—</p>
+              <p class="bep-sub">cup/hari</p>
+            </div>
+            <div class="bep-card">
+              <p class="bep-label">BEP Omzet / Bulan</p>
+              <p class="bep-value" id="bepOmzet">—</p>
+              <p class="bep-sub">rupiah</p>
+            </div>
+            <div class="bep-card">
+              <p class="bep-label">Laba Bersih / Bulan</p>
+              <p class="bep-value" id="labaBulan">—</p>
+              <p class="bep-sub">rupiah</p>
+            </div>
+            <div class="bep-card">
+              <p class="bep-label">Omzet / Bulan</p>
+              <p class="bep-value" id="omzetBulan">—</p>
+              <p class="bep-sub">rupiah</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress vs Target -->
+        <div class="target-section" id="targetSection">
+          <p class="summary-section-title">Target vs BEP Harian</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-labels">
+              <span id="progressLabel">Target: — cup | BEP: — cup</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-hitung" id="btnHitung">⚡ Hitung HPP Sekarang</button>
+      </div>
+    </div><!-- /right-col -->
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inst">
+        <img src="assets/logo-politala.png" alt="Logo POLITALA" class="footer-logo"
+          onerror="this.style.display='none'" />
+        <div class="footer-inst-text">
+          <strong>Politeknik Negeri Tanah Laut (POLITALA)</strong>
+          <span>Program Studi D4 Akuntansi Perpajakan</span>
+          <span>Jl. A. Yani Km. 6, Pelaihari, Tanah Laut, Kalimantan Selatan</span>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <p>🧋 <strong>KalkuHPP</strong> — Media Pembelajaran HPP untuk UMKM Minuman Kekinian</p>
+      <p class="footer-sub">Data hanya tersimpan di browser Anda. Tidak ada data yang dikirim ke server.</p>
+    </div>
+  </footer>
+
+  <!-- ===== MODALS ===== -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h4 id="modalTitle">Tambah Item</h4>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="modalCancel">Batal</button>
+        <button class="btn-save" id="modalSave">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
