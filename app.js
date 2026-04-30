@@ -5,6 +5,30 @@
 
 'use strict';
 
+// ─── THEME TOGGLE ─────────────────────────────
+const btnTheme = document.getElementById('btnTheme');
+let isDark = false;
+
+// Check local storage for theme preference
+if (localStorage.getItem('theme') === 'dark') {
+  isDark = true;
+  document.documentElement.setAttribute('data-theme', 'dark');
+  btnTheme.textContent = '☀️';
+}
+
+btnTheme.addEventListener('click', () => {
+  isDark = !isDark;
+  if (isDark) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+    btnTheme.textContent = '☀️';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+    btnTheme.textContent = '🌙';
+  }
+});
+
 // ─── STATE ────────────────────────────────────
 const state = {
   bahan:    [],  // { id, nama, satuan, jml, harga }
