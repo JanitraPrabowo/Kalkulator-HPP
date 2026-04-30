@@ -472,15 +472,15 @@ table {
 }
 
 thead th {
-  background: var(--bg2);
-  color: var(--text3);
+  background: linear-gradient(135deg, #E8B830, #D4A017);
+  color: #1B2A4A;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 10px 12px;
   text-align: left;
-  border-bottom: 1px solid var(--border2);
+  border-bottom: 2px solid #C48A00;
 }
 
 tbody tr {
